@@ -2,7 +2,8 @@ export enum ModuleType {
   LESEN = 'LESEN',
   SPRACHBAUSTEINE = 'SPRACHBAUSTEINE',
   HOEREN = 'HOEREN', 
-  SCHREIBEN = 'SCHREIBEN'
+  SCHREIBEN = 'SCHREIBEN',
+  WORTSCHATZ = 'WORTSCHATZ' // Added
 }
 
 export enum QuestionType {
@@ -18,8 +19,8 @@ export interface Question {
   text: string; 
   options?: string[]; 
   correctAnswer?: string;
-  contextText?: string; // Used for Reading Texts or Listening Transcripts
-  audioUrl?: string; // New: Link to audio file
+  contextText?: string; 
+  audioUrl?: string;
   structureHelp?: string; 
   explanation?: string; 
   points?: number; 
@@ -53,4 +54,13 @@ export interface EssayCorrection {
     feedback: string[]; 
     rating: string; 
     grammarScore: number; 
+}
+
+// Vocabulary Interface
+export interface VocabularyItem {
+    id: string;
+    original: string;
+    translation: string;
+    type: 'Wort' | 'Ausdruck' | 'Grammatik';
+    dateAdded: string;
 }

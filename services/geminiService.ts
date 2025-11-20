@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
-import { AIExplanation, Question, ModuleType, EssayCorrection } from "../types";
+import { AIExplanation, Question, ModuleType, EssayCorrection, VocabularyItem, Exercise, QuestionType } from "../types";
 
 // Initialize Gemini
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
@@ -111,5 +111,63 @@ export const correctEssay = async (essayText: string, taskPrompt: string): Promi
             rating: "Fehler",
             grammarScore: 0
         };
+    }
+};
+
+// NEW: Generate vocabulary exercises
+export const generateVocabularyExercise = async (words: VocabularyItem[]): Promise<Exercise | null> => {
+    if (words.length === 0) return null;
+
+    // Select random 5 words if list is long
+    const selectedWords = words.sort(() => 0.5 - Math.random()).slice(0, 5);
+    const wordsList = selectedWords.map(w => `${w.original} (${w.translation})`).join(", ");
+
+    const prompt = `
+        Role: German B2 Teacher.
+        Task: Create a mini-exercise to practice these specific vocabulary items: [${wordsList}].
+        
+        Requirements:
+        1. Create 3-5 questions.
+        2. Mix Question Types:
+           - Fill in the blank (Lückentext) where the user must type the word.
+           - Multiple Choice (choose the correct synonym or preposition).
+        3. Ensure the context is B2 level (Business/Office/General).
+        
+        Output Requirement: Return ONLY a JSON object matching the 'Exercise' interface structure.
+        Structure:
+        {
+          "id": "vocab-gen-1",
+          "title": "Wortschatz-Training",
+          "module": "WORTSCHATZ",
+          "subType": "AI-Generated",
+          "instruction": "Lösen Sie die Aufgaben zu Ihren gespeicherten Wörtern.",
+          "questions": [
+            {
+              "id": "q1",
+              "type": "TEXT_INPUT" or "MULTIPLE_CHOICE",
+              "text": "Question text (e.g. 'Ergänzen Sie: ...')",
+              "options": ["Option A", "Option B"] (only for MC),
+              "correctAnswer": "The correct word/option",
+              "explanation": "Why this is correct.",
+              "points": 10
+            }
+          ]
+        }
+    `;
+
+    try {
+        const response = await ai.models.generateContent({
+            model: modelId,
+            contents: prompt,
+            config: { responseMimeType: "application/json" }
+        });
+        
+        const text = response.text;
+        if(!text) throw new Error("Empty response");
+
+        return JSON.parse(text) as Exercise;
+    } catch (e) {
+        console.error("Vocab gen error", e);
+        return null;
     }
 }

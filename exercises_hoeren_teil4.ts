@@ -7,7 +7,7 @@ export const EXERCISES_HOEREN_TEIL_4: Exercise[] = [
     title: "Hören Teil 4 (Variante 1)",
     module: ModuleType.HOEREN,
     subType: "Teil 4",
-    instruction: "Hören Sie die Meinungsäußerungen.",
+    instruction: "Hören Sie die Meinungsäußerungen. Wer sagt was?",
     questions: [
       { id: "h-t4-v1-q36", text: "36. Andrea", options: ["a) wird mit dem Vertreter frühstücken.", "b)..."], correctAnswer: "a) wird mit dem Vertreter frühstücken.", part: "Teil 4", audioUrl: "https://t.me/B2_C2_Deutsch/65534/195147", explanation: "Laut Screenshot." },
       { id: "h-t4-v1-q37", text: "37. Frau Plasberg", options: ["b) möchte die neue Werbekampagne diskutieren.", "a)..."], correctAnswer: "b) möchte die neue Werbekampagne diskutieren.", part: "Teil 4", explanation: "Laut Screenshot." },

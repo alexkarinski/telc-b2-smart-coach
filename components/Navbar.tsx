@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookOpen, CheckCircle, User, Activity } from 'lucide-react';
+import { BookOpen, CheckCircle, User, Activity, Book } from 'lucide-react'; // Import Book icon
 
 interface NavbarProps {
   activeTab: string;
@@ -10,6 +10,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeTab, setActiveTab }) => {
   const navItems = [
     { id: 'dashboard', label: 'Lernen', icon: BookOpen },
     { id: 'practice', label: 'Training', icon: Activity },
+    { id: 'vocabulary', label: 'Wortschatz', icon: Book }, // New Tab
     { id: 'profile', label: 'Profil', icon: User },
   ];
 

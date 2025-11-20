@@ -83,7 +83,7 @@ export const EXERCISES_HOEREN_TEIL_2: Exercise[] = [
     questions: [
       { id: "h-t2-v3-q28", text: "28. Firmenlauf", options: ["f) Für den Lauf werden sportliche Mitarbeiter gesucht.", "a)..."], correctAnswer: "f) Für den Lauf werden sportliche Mitarbeiter gesucht.", part: "Teil 2", audioUrl: "https://t.me/B2_C2_Deutsch/65534/195151", explanation: "Laut Transkript." },
       { id: "h-t2-v3-q29", text: "29. Jubiläum", options: ["d) Die Firma plant aus besonderem Anlass eine Kunden-Kampagne.", "a)..."], correctAnswer: "d) Die Firma plant aus besonderem Anlass eine Kunden-Kampagne.", part: "Teil 2", explanation: "Laut Transkript." },
-      { id: "h-t2-v3-q30", text: "30. Ausflug", options: ["e) Es gibt verschiedene Programmpunkte beim Betriebsausflug.", "a)..."], correctAnswer: "e) Es gibt verschiedene Programmpunkte beim Betriebsausflug.", part: "Teil 2", explanation: "Laut Transkript." },
+      { id: "h-t2-v3-q30", text: "30. Ausflug", options: ["e) Es gibt verschiedene Programmpunkte beim Betriebsausflug.", "a)..."], correctAnswer: "e) Es gibt verschiedene Programmpunkte beim Betriebsausflug.", part: "Teil 2", explanation: "Laut Screenshot." },
       { id: "h-t2-v3-q31", text: "31. Kleidung", options: ["b) Auf der Firmenfeier gibt es keine Kleiderordnung.", "a)..."], correctAnswer: "b) Auf der Firmenfeier gibt es keine Kleiderordnung.", part: "Teil 2", explanation: "Laut Transkript." }
     ]
   },

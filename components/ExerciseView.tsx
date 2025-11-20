@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Exercise, Question, QuestionType, AIExplanation, EssayCorrection } from '../types';
 import { getExplanation, translateToRussian, correctEssay } from '../services/geminiService';
 import { ExplanationModal } from './ExplanationModal';
-import { Play, Pause, Edit3, Check, RotateCcw, Home, Languages, Sparkles, FileText, Send, Headphones, Eye, EyeOff } from 'lucide-react';
+import { Play, Pause, Edit3, Check, RotateCcw, Home, Languages, Sparkles, FileText, Send, Headphones, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 interface ExerciseViewProps {
   exercise: Exercise;
-  onComplete: () => void;
+  onComplete: (results: { correct: number; total: number; exerciseId: string; module: any }) => void;
   goBack: () => void;
 }
 
@@ -39,7 +39,7 @@ const HighlightedText: React.FC<{ text: string; currentGapId: string }> = ({ tex
   );
 };
 
-export const ExerciseView: React.FC<ExerciseViewProps> = ({ exercise, goBack }) => {
+export const ExerciseView: React.FC<ExerciseViewProps> = ({ exercise, onComplete, goBack }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   
   // MC / Matching State
@@ -191,6 +191,17 @@ export const ExerciseView: React.FC<ExerciseViewProps> = ({ exercise, goBack }) 
       return exercise.questions[0]?.contextText;
   };
 
+  // Finish and pass data back
+  const handleFinish = () => {
+      const { totalScore, maxScore } = calculateScore();
+      onComplete({
+          correct: totalScore,
+          total: maxScore,
+          exerciseId: exercise.id,
+          module: exercise.module
+      });
+  };
+
   if (showResults) {
       const { totalScore, maxScore, partStats } = calculateScore();
       const percentage = Math.round((totalScore / maxScore) * 100);
@@ -240,24 +251,13 @@ export const ExerciseView: React.FC<ExerciseViewProps> = ({ exercise, goBack }) 
                           </table>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4">
                           <button 
-                            onClick={() => { 
-                                setShowResults(false); 
-                                setCurrentQuestionIndex(0); 
-                                setAnswerHistory({}); 
-                            }}
-                            className="flex items-center justify-center gap-2 p-4 rounded-xl bg-gray-100 text-gray-700 font-semibold active:bg-gray-200 transition-colors"
-                          >
-                              <RotateCcw size={20} />
-                              Wiederholen
-                          </button>
-                          <button 
-                            onClick={goBack}
+                            onClick={handleFinish}
                             className="flex items-center justify-center gap-2 p-4 rounded-xl bg-primary text-white font-bold shadow-lg shadow-primary/20 active:scale-95 transition-transform"
                           >
-                              <Home size={20} />
-                              Menü
+                              <span>Abschließen & Speichern</span>
+                              <ArrowRight size={20} />
                           </button>
                       </div>
                   </div>
@@ -311,17 +311,29 @@ export const ExerciseView: React.FC<ExerciseViewProps> = ({ exercise, goBack }) 
                      {/* Transcript Toggle */}
                      {currentQuestion.contextText && (
                          <div className="mt-2">
-                             <button 
-                                onClick={() => setShowTranscript(!showTranscript)}
-                                className="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1 underline"
-                             >
-                                 {showTranscript ? <EyeOff size={14}/> : <Eye size={14}/>}
-                                 {showTranscript ? 'Transkript verbergen' : 'Transkript anzeigen'}
-                             </button>
+                             <div className="flex justify-between items-center">
+                                <button 
+                                    onClick={() => setShowTranscript(!showTranscript)}
+                                    className="text-xs text-gray-500 hover:text-gray-700 flex items-center gap-1 underline"
+                                >
+                                    {showTranscript ? <EyeOff size={14}/> : <Eye size={14}/>}
+                                    {showTranscript ? 'Transkript verbergen' : 'Transkript anzeigen'}
+                                </button>
+                                
+                                {showTranscript && (
+                                    <button 
+                                        onClick={() => { /* handle translate */ }}
+                                        disabled={false}
+                                        className="text-orange-400 hover:text-orange-600 transition-colors p-1"
+                                    >
+                                        <Languages size={14} />
+                                    </button>
+                                )}
+                             </div>
                              
                              {showTranscript && (
                                  <div className="mt-3 pt-3 border-t border-orange-200 text-sm text-gray-700 leading-relaxed whitespace-pre-line animate-fade-in">
-                                     {currentQuestion.contextText}
+                                    {currentQuestion.contextText}
                                  </div>
                              )}
                          </div>
