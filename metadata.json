@@ -1,0 +1,5 @@
+{
+  "name": "Telc B2 Smart Coach",
+  "description": "A mobile-first AI trainer for the Telc B2 German exam, covering Lesen, Sprachbausteine, and Writing with intelligent explanations.",
+  "requestFramePermissions": []
+}
